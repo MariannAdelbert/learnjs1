@@ -12,3 +12,5 @@ common.hello();
 //console.log("Appi");
 
 import './style.scss';
+
+import * as bootstrap from 'bootstrap'

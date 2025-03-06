@@ -1,5 +1,7 @@
 import path from 'path';
+import * as glob from 'glob';
 import HtmlWebpackPlugin from 'html-webpack-plugin';
+import { PurgeCSSPlugin } from 'purgecss-webpack-plugin';
 
 export default {
     entry: './src/index.js',
@@ -23,13 +25,27 @@ export default {
             },
             {
                 test: /\.scss$/i,
-                use: ["style-loader", "css-loader", "sass-loader"],
+                use: [
+                    "style-loader", 
+                    "css-loader",
+                    {
+                        loader: "sass-loader",
+                        options: { 
+                            sassOptions: {
+                                quietDeps: true,
+                            },
+                        },
+                    },
+                ],
             },
         ],
     },
     plugins: [
         new HtmlWebpackPlugin({
             template: './src/index.html'
-        })
+        }),
+        new PurgeCSSPlugin({
+            paths: glob.sync(`./src/**/*`, { nodir: true }),
+          }),
     ],
 };
